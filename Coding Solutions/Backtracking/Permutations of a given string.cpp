@@ -7,7 +7,7 @@ using namespace std;
 
 void fn(map<char, ll> m, string result, ll level)
 {
-	if (level == m.size())
+	if (level == result.size())
 	{
 		cout << result << " ";
 		return;
