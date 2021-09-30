@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        int i = 0, j = 0, min_num = INT_MAX, max_num = INT_MIN, ans = 0;
+        multiset<int> s;
+
+        for (int i = 0; i < nums.size(); i++)
+        {
+            s.insert(nums[i]);
+
+            if (abs(*s.rbegin() - *s.begin()) <= limit)
+            {
+                ans = max(ans, i - j + 1);
+            }
+            else
+            {
+                while (abs(*s.rbegin() - *s.begin()) > limit && j <= i)
+                {
+                    s.erase(s.find(nums[j]));
+                    j++;
+                }
+            }
+        }
+
+        return ans;
+    }
+};
+
+/*
+Better solution ( O(n) )
+int longestSubarray(vector<int>& A, int limit) {
+        deque<int> maxd, mind;
+        int i = 0, j;
+        for (j = 0; j < A.size(); ++j) {
+            while (!maxd.empty() && A[j] > maxd.back()) maxd.pop_back();
+            while (!mind.empty() && A[j] < mind.back()) mind.pop_back();
+            maxd.push_back(A[j]);
+            mind.push_back(A[j]);
+            if (maxd.front() - mind.front() > limit) {
+                if (maxd.front() == A[i]) maxd.pop_front();
+                if (mind.front() == A[i]) mind.pop_front();
+                ++i;
+            }
+        }
+        return j - i;
+    }
+*/
